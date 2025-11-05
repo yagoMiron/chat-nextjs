@@ -1,0 +1,70 @@
+@reference "tailwindcss";
+
+.campo {
+  @apply flex flex-col w-full mb-2;
+}
+.campo label {
+  @apply text-left mx-1.5 text-slate-200 font-bold;
+}
+.campo input,
+.campo textarea,
+.campo select {
+  @apply w-full rounded-md border border-slate-300 text-slate-300 text-base py-2.5 px-4;
+}
+.campo select {
+  @apply bg-white;
+}
+.campo select {
+  @apply text-lg;
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  @apply text-slate-300;
+}
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus {
+  @apply outline outline-slate-200;
+}
+.required {
+  @apply text-red-500;
+}
+.icon {
+  @apply flex justify-end items-center;
+}
+.icon img {
+  @apply absolute mr-3 cursor-pointer;
+}
+
+.campo .borderNone {
+  @apply text-slate-200 py-1 border-slate-300;
+}
+
+.title {
+  @apply text-lg;
+}
+
+.addBtn {
+  @apply mx-auto bg-slate-200 rounded-3xl px-12 py-2 pr-8 text-white font-bold border-2 border-slate-200 bg-no-repeat bg-contain;
+
+  background-size: 16px;
+  background-position: 10% 50%;
+}
+.addBtn:hover {
+  @apply bg-white text-slate-200;
+}
+.removeBtn {
+  @apply mx-auto bg-red-600 rounded-3xl px-14 py-2 pr-8 text-white font-bold border-2 border-red-600 bg-no-repeat bg-contain;
+
+  background-size: 22px;
+  background-position: 10% 50%;
+}
+.removeBtn:hover {
+  @apply bg-white text-red-600;
+}
+.listaCampos {
+  @apply flex-col flex gap-2;
+}
