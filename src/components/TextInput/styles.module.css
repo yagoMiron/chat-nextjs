@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .campo {
-  @apply flex flex-col w-full mb-2;
+  @apply flex flex-col w-full;
 }
 .campo label {
   @apply text-left mx-1.5 text-slate-200 font-bold;
@@ -22,7 +22,7 @@
 
 .campo input::placeholder,
 .campo textarea::placeholder {
-  @apply text-slate-300;
+  @apply text-slate-500;
 }
 .campo input:focus,
 .campo textarea:focus,

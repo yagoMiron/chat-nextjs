@@ -21,25 +21,14 @@ const TextInput = ({
   placeholder,
   maxLength,
   minLength,
-  required,
   value,
-  customValidity,
   setter,
   mask,
-  hideAsterisk,
 }: Props) => {
   const nome = title.toLowerCase().replace(" ", "_");
 
   return (
     <div className={styles.campo}>
-      <label htmlFor={nome} className={styles.title}>
-        {title}
-        <span className={styles.required}>
-          {required && !hideAsterisk && "*"}
-        </span>
-        :
-      </label>
-
       <input
         ref={mask}
         minLength={minLength}
@@ -49,8 +38,7 @@ const TextInput = ({
         value={value}
         disabled={setter ? false : true}
         placeholder={placeholder}
-        maxLength={255}
-        required={required}
+        maxLength={maxLength || 255}
         onChange={(e) => {
           if (setter) {
             const v = e.target.value;
