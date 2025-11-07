@@ -2,7 +2,7 @@
 import styles from "./styles.module.css";
 
 interface Props {
-  title: string;
+  title?: string;
   type: "text" | "email" | "tel" | "password" | "number" | "date";
   placeholder?: string;
   maxLength?: number;
@@ -25,15 +25,13 @@ const TextInput = ({
   setter,
   mask,
 }: Props) => {
-  const nome = title.toLowerCase().replace(" ", "_");
-
   return (
     <div className={styles.campo}>
+      {title && <label>{title}:</label>}
       <input
         ref={mask}
         minLength={minLength}
         type={type}
-        name={nome}
         className={setter ? "" : styles.borderNone}
         value={value}
         disabled={setter ? false : true}

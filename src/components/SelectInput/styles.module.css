@@ -1,14 +1,14 @@
 @reference "tailwindcss";
 
 .campo {
-  @apply flex w-full items-center;
+  @apply flex w-full items-center gap-1.5;
 }
 .campo label {
   @apply text-left mx-1.5 text-2xl text-slate-200 font-bold;
 }
 
 .campo select {
-  @apply w-full rounded-2xl border border-slate-300 text-slate-300 text-lg p-2;
+  @apply w-full rounded-xl border border-slate-300 text-slate-300 text-lg p-3;
 }
 
 .campo input:focus {
@@ -17,8 +17,4 @@
 
 .campo .borderNone {
   @apply text-slate-200 py-1 border-slate-300;
-}
-
-.title {
-  @apply text-lg;
 }

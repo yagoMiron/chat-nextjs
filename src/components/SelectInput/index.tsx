@@ -2,7 +2,7 @@
 import styles from "./styles.module.css";
 
 type Props = {
-  title: string;
+  title?: string;
   value: any;
   options: [value: string, title: string][];
   setter?: Function;
@@ -12,7 +12,7 @@ type Props = {
 const SelectInput = ({ title, value, options, setter, required }: Props) => {
   return (
     <div className={styles.campo}>
-      <label className={styles.title}>{title}:</label>
+      {title && <label>{title}:</label>}
       <select
         className={setter ? "" : styles.borderNone}
         disabled={setter ? false : true}
