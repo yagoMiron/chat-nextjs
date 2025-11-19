@@ -2,35 +2,81 @@
 import ChatBox from "@/components/ChatBox";
 import TextInput from "@/components/TextInput";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import send from "../../../public/send.svg";
 import { ChatMessage } from "@/types/Message";
 import SelectInput from "@/components/SelectInput";
+import { io } from "socket.io-client";
+import { UserContext } from "@/context/UserContext";
+
+const socket = io("http://localhost:4000");
 
 export default function Home() {
-  const name = "Yago";
+  const { name, room } = useContext(UserContext);
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [room, setRoom] = useState("sala1");
+  const [filteredMessages, setFilteredMessages] = useState<ChatMessage[]>([]);
+  const [newRoom, setNewRoom] = useState(room);
+
+  const filterMessage = () => {
+    setFilteredMessages(messages.filter((value) => value.sala == newRoom));
+  };
 
   const sendMessage = () => {
+    if (!message.trim()) return;
+
+    socket.emit("send_message", {
+      autor: name,
+      mensagem: message,
+      sala: newRoom,
+    });
+
     setMessages([
       ...messages,
       {
-        author: name,
-        content: message,
-        room: room,
+        autor: name,
+        mensagem: message,
+        sala: newRoom,
       },
     ]);
+    filterMessage();
+
     setMessage("");
   };
+
+  useEffect(() => {
+    // Carrega todas as mensagens do backend
+    socket.emit("load_messages");
+    socket.on("old_messages", (all) => {
+      const oldMessages = all.map((obj: any) => {
+        const message: ChatMessage = {
+          autor: obj.autor || "NaN",
+          mensagem: obj.mensagem || "",
+          sala: obj.sala || "sala1",
+        };
+        return message;
+      });
+      setMessages(oldMessages);
+      filterMessage();
+    });
+    // Recebe mensagens novas em tempo real
+    socket.on("receive_message", (msg) => {
+      setMessages((prev) => [...prev, msg]);
+      filterMessage();
+    });
+    return () => {
+      socket.off("old_messages");
+      socket.off("receive_message");
+    };
+  }, []);
+
   return (
     <div className="flex items-center justify-center bg-zinc-50 font-sans dark:bg-black h-screen box-border">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-center gap-4 px-16 bg-white dark:bg-black sm:items-start">
         <SelectInput
-          value={room}
-          setter={setRoom}
+          value={newRoom}
+          setter={setNewRoom}
           options={[
             ["sala1", "Sala 1"],
             ["sala2", "Sala 2"],
@@ -38,7 +84,7 @@ export default function Home() {
             ["sala4", "Sala 4"],
           ]}
         />
-        <ChatBox messageList={messages} sala={room} />
+        <ChatBox messageList={filteredMessages} />
         <div className="flex w-full items-center gap-2">
           <TextInput
             title="Mensagem"

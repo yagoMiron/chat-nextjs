@@ -1,5 +1,5 @@
 export type ChatMessage = {
-  author: string;
-  content: string;
-  room: string;
+  autor: string;
+  mensagem: string;
+  sala: string;
 };

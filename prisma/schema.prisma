@@ -9,7 +9,8 @@ datasource db {
 
 model Message {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userName  String
-  text      String
+  autor     String
+  mensagem  String
+  sala      String
   createdAt DateTime @default(now())
 }
