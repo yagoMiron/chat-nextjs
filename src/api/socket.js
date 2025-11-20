@@ -23,11 +23,15 @@ io.on("connection", (socket) => {
   // Receber e salvar nova mensagem
   socket.on("send_message", async (data) => {
     const { autor, mensagem, sala } = data;
-    const newMessage = await prisma.message.create({
+    await prisma.message.create({
       data: { autor, mensagem, sala },
     });
-    io.emit("receive_message", newMessage);
+    const allMessages = await prisma.message.findMany({
+      orderBy: { createdAt: "asc" },
+    });
+    io.emit("receive_message", allMessages);
   });
+
   socket.on("disconnect", () => {
     console.log("Usuário desconectado:", socket.id);
   });

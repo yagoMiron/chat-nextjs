@@ -16,32 +16,19 @@ export default function Home() {
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [filteredMessages, setFilteredMessages] = useState<ChatMessage[]>([]);
   const [newRoom, setNewRoom] = useState(room);
 
-  const filterMessage = () => {
-    setFilteredMessages(messages.filter((value) => value.sala == newRoom));
+  const filterMessages = () => {
+    return messages.filter((value) => value.sala == newRoom);
   };
 
   const sendMessage = () => {
     if (!message.trim()) return;
-
     socket.emit("send_message", {
       autor: name,
       mensagem: message,
       sala: newRoom,
     });
-
-    setMessages([
-      ...messages,
-      {
-        autor: name,
-        mensagem: message,
-        sala: newRoom,
-      },
-    ]);
-    filterMessage();
-
     setMessage("");
   };
 
@@ -58,17 +45,12 @@ export default function Home() {
         return message;
       });
       setMessages(oldMessages);
-      filterMessage();
     });
+
     // Recebe mensagens novas em tempo real
-    socket.on("receive_message", (msg) => {
-      setMessages((prev) => [...prev, msg]);
-      filterMessage();
+    socket.on("receive_message", (allMessages) => {
+      setMessages(allMessages);
     });
-    return () => {
-      socket.off("old_messages");
-      socket.off("receive_message");
-    };
   }, []);
 
   return (
@@ -84,7 +66,7 @@ export default function Home() {
             ["sala4", "Sala 4"],
           ]}
         />
-        <ChatBox messageList={filteredMessages} />
+        <ChatBox messageList={filterMessages()} />
         <div className="flex w-full items-center gap-2">
           <TextInput
             title="Mensagem"

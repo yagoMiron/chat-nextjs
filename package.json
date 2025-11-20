@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "server": "node ./src/api/socket.js",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
